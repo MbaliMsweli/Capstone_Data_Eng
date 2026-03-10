@@ -71,7 +71,7 @@ INSERT INTO [RetailDataWarehouse].[dbo].[DimStore] (
         LoadDate  
 )
 SELECT DISTINCT
-   CAST(S.StoreID AS BIGINT), 
+   CAST(S.StoreID AS INT), 
    CAST(S.StoreName AS NVARCHAR), 
    CAST(S.Province AS NVARCHAR), 
    GETDATE()

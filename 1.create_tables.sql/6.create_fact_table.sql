@@ -15,5 +15,3 @@ BEGIN
     LastRunCheckDate DATETIME NULL
     );
 END
-   
-
