@@ -122,6 +122,7 @@ END;
 
 EXEC [RetailDataWarehouse].[dbo].[SP_Create_DimProductTable];
 
+
 -----create stored procedure for creating DimProvinceTable
 CREATE OR ALTER  PROCEDURE [dbo].[SP_Create_DimProvinceTable] 
 AS
