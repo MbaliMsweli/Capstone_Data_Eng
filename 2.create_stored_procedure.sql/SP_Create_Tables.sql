@@ -162,6 +162,7 @@ END;
 
 EXEC [RetailDataWarehouse].[dbo].[SP_Create_DimStoreTable];
 
+
 -----create stored procedure for creating FactSalesTable
 CREATE OR ALTER PROCEDURE [dbo].[SP_Create_FactSalesTable] 
 AS
