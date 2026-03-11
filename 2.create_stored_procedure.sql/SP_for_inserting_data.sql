@@ -1,6 +1,6 @@
 ----STORED PROCEDURE FOR INSERTING DATA INTO DimCashierTable
 
-CREATE   PROCEDURE [dbo].[SP_InsertInto_DimCashierTable] 
+CREATE PROCEDURE [dbo].[SP_InsertInto_DimCashierTable] 
 AS
 BEGIN
 SET NOCOUNT ON;
@@ -22,6 +22,8 @@ WHERE NOT EXISTS (
 );
 END
 GO
+
+EXEC [RetailDataWarehouse]. [dbo].[SP_InsertInto_DimCashierTable] 
 
 ----STORED PROCEDURE FOR INSERTING DATA INTO DimProductTable
 CREATE   PROCEDURE [dbo].[SP_InsertInto_DimProductTable] 
@@ -51,7 +53,7 @@ WHERE NOT EXISTS (
     WHERE S.ProductID = D.ProductID
 );
 END
-
+EXEC [RetailDataWarehouse].[dbo].[SP_InsertInto_DimProductTable]
 
 ----STORED PROCEDURE FOR INSERTING DATA INTO DimProvinceTable
 CREATE   PROCEDURE [dbo].[SP_InsertInto_DimProvinceTable] 
@@ -77,6 +79,8 @@ WHERE NOT EXISTS (
 );
 END
 GO
+
+EXEC [RetailDataWarehouse].[dbo].[SP_InsertInto_DimProvinceTable]
 
 ----STORED PROCEDURE FOR INSERTING DATA INTO DimStoreTable
 
@@ -104,12 +108,12 @@ WHERE NOT EXISTS (
     FROM [RetailDataWarehouse].[dbo].[DimStore]AS D
     WHERE S.StoreID= D.StoreID
 );
+END
+GO 
+EXEC [RetailDataWarehouse].[dbo].[SP_InsertInto_DimStoreTable] 
 
-GO  
 
-
-
-CREATE   PROCEDURE [dbo].[SP_InsertInto_DimStoreTable] 
+CREATE PROCEDURE [dbo].[SP_InsertInto_FactTable] 
 AS
 BEGIN
 SET NOCOUNT ON;
@@ -159,3 +163,5 @@ WHERE NOT EXISTS
       AND f.TotalAmount = CAST(s.TotalAmount AS DECIMAL(18,2))
 );
 END
+GO
+EXEC [RetailDataWarehouse].[dbo].[SP_InsertInto_FactTable] 

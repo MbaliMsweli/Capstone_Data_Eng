@@ -24,10 +24,13 @@ AS
 BEGIN
 SET NOCOUNT ON;
 
-IF OBJECT_ID('dbo.DimDate', 'U') IS NOT NULL
-    DROP TABLE dbo.DimDate;
+/* Step 2: Drop table if it exists */
+IF OBJECT_ID('[RetailDataWarehouse].dbo.DimDate', 'U') IS NOT NULL
+DROP TABLE [RetailDataWarehouse].dbo.DimDate;
 
-CREATE TABLE dbo.DimDate
+
+/* Step 3: Create DimDate table */
+CREATE TABLE [RetailDataWarehouse].dbo.DimDate
 (
     DateKey INT NOT NULL PRIMARY KEY,
     FullDate DATE NOT NULL,
@@ -47,6 +50,7 @@ CREATE TABLE dbo.DimDate
 );
 
 
+/* Step 4: Insert dates */
 DECLARE @StartDate DATE = '2025-01-01';
 DECLARE @EndDate DATE   = '2025-12-31';
 
@@ -72,26 +76,27 @@ BEGIN
         ReportingDateDesc
     )
     SELECT
-        CONVERT(INT, FORMAT(@StartDate, 'yyyyMMdd')),               
-        @StartDate,                                                
-        CONVERT(INT, FORMAT(@StartDate, 'yyyyMM')),                 
-        MONTH(@StartDate),                                          
-        YEAR(@StartDate) * 10 + DATEPART(QUARTER, @StartDate),     
-        DATEPART(QUARTER, @StartDate),                             
-        YEAR(@StartDate),                                           
-        DATEPART(WEEK, @StartDate),                                 
-        DATEPART(DAYOFYEAR, @StartDate),                            
-        DAY(@StartDate),                                            
-        DATEPART(WEEKDAY, @StartDate),                             
-        CASE WHEN DATEPART(WEEKDAY, @StartDate) IN (1,7) THEN 1 ELSE 0 END,  
-        CASE WHEN DATEPART(WEEKDAY, @StartDate) IN (1,7) THEN 0 ELSE 1 END,  
-        0,                                                          
-        FORMAT(@StartDate, 'MMM yyyy');                             
+        CONVERT(INT, FORMAT(@StartDate,'yyyyMMdd')),       
+        @StartDate,                                        
+        CONVERT(INT, FORMAT(@StartDate,'yyyyMM')),         
+        MONTH(@StartDate),                                 
+        YEAR(@StartDate)*10 + DATEPART(QUARTER,@StartDate),
+        DATEPART(QUARTER,@StartDate),                      
+        YEAR(@StartDate),                                  
+        DATEPART(WEEK,@StartDate),                         
+        DATEPART(DAYOFYEAR,@StartDate),                    
+        DAY(@StartDate),                                   
+        DATEPART(WEEKDAY,@StartDate),                      
+        CASE WHEN DATEPART(WEEKDAY,@StartDate) IN (1,7) THEN 1 ELSE 0 END,
+        CASE WHEN DATEPART(WEEKDAY,@StartDate) IN (1,7) THEN 0 ELSE 1 END,
+        0,
+        FORMAT(@StartDate,'MMM yyyy');
 
-    SET @StartDate = DATEADD(DAY, 1, @StartDate);
-
+    SET @StartDate = DATEADD(DAY,1,@StartDate);
 END
 END;
+
+
 
 EXEC [RetailDataWarehouse].[dbo].[SP_Create_DimDateTable];
 
@@ -145,12 +150,12 @@ SET NOCOUNT ON;
 IF OBJECT_ID('[RetailDataWarehouse].dbo.DimStore', 'U') IS NULL
 BEGIN
     CREATE TABLE [RetailDataWarehouse].dbo.DimStore (
-        StoreKey INT IDENTITY(1,1) PRIMARY KEY,
-        StoreID INT NOT NULL,
-        StoreName NVARCHAR (MAX) NOT NULL,
-        Province NVARCHAR (Max) NULL,
-        LoadDate DATETIME DEFAULT GETDATE(),
-        LastRunCheckDate DATETIME NULL
+      [StoreKey] [int] IDENTITY(1,1) NOT NULL,
+[StoreID] [int] NOT NULL,
+[StoreName] [nvarchar](MAX) NULL,
+[Province] [nvarchar](max) NULL,
+[LoadDate] [datetime] NULL,
+[LastRunCheckDate] [datetime] NULL
     );
 END
 END;
