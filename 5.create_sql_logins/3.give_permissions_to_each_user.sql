@@ -58,3 +58,6 @@ SELECT * FROM dbo.FactSales;
 use [RetailDataWarehouse]
 EXECUTE AS USER = 'StoreManager';
 SELECT TOP 5 * FROM dbo.FactSales;
+
+---Return to Admin to be able to access everything
+REVERT;
