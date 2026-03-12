@@ -53,3 +53,51 @@ FROM [RetailDataWarehouse].[dbo].[FactSales] AS a
 INNER JOIN[dbo].[DimDate]  AS b
 ON a.DateKey = b.DateKey
 GROUP BY b.[MonthName]
+
+
+--7. What percentage of revenue comes from Toys?
+SELECT 
+    SUM(CASE WHEN b.Category = 'Toys' THEN a.TotalAmount ELSE 0 END) * 100.0
+    / SUM(a.TotalAmount) AS ToysRevenuePercentage
+FROM [RetailDataWarehouse].[dbo].[FactSales] AS a
+JOIN [RetailDataWarehouse].[dbo].[DimProduct] AS b
+    ON a.ProductKey = b.ProductKey;
+
+
+
+--8. Identify the bottom 5 products by revenue.
+SELECT TOP 5 b.ProductName ,
+SUM(a.TotalAmount) AS TotalSales
+FROM [RetailDataWarehouse].[dbo].[FactSales] AS a
+INNER JOIN [RetailDataWarehouse].[dbo].[DimProduct] AS b
+ON a.ProductKey = b.ProductKey
+GROUP BY b.ProductName
+
+
+--9. Compare Gauteng vs Western Cape performance.
+SELECT 
+    Province, 
+    COUNT(b.ProvinceKey) AS TotalTransactions,
+    SUM(a.TotalAmount) AS TotalRevenue
+FROM [RetailDataWarehouse].[dbo].[FactSales] AS a
+INNER JOIN [RetailDataWarehouse].[dbo].[DimProvince] AS b
+ON a.ProvinceKey = b.ProvinceKey
+WHERE Province IN ('Gauteng', 'Western Cape')
+GROUP BY Province;
+
+
+--10. Describe key trends observed in monthly sales.
+SELECT 
+    MONTH(b.FullDate) AS MonthNumber,
+    YEAR(b.FullDate) AS YearNumber,
+    SUM(a.TotalAmount) AS TotalSales
+FROM [RetailDataWarehouse].dbo.FactSales AS a
+JOIN [RetailDataWarehouse].dbo.DimDate AS b
+    ON a.DateKey = b.DateKey
+GROUP BY 
+    YEAR(b.FullDate),
+    MONTH(b.FullDate)
+ORDER BY 
+    YEAR(b.FullDate),
+    MONTH(b.FullDate);
+   
